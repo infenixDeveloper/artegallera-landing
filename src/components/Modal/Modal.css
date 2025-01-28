@@ -1,0 +1,126 @@
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 9999;
+}
+
+.modal__overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal__container {
+  position: relative;
+  width: 90%;
+  height: 500px;
+  background-color: white;
+  border-radius: 21px;
+  overflow: hidden;
+}
+
+.modal__btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 80px;
+  width: 100%;
+  background: linear-gradient(90deg, #ffcc00 0%, #997a00 100%);
+}
+
+.modal__img-container {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  top: 100%;
+  left: 1rem;
+  border-radius: 50%;
+  padding: 0.5rem;
+  transform: translateY(-50%);
+  background-color: rgb(255, 255, 255);
+}
+
+.modal__img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal__header h2 {
+  margin-left: 8rem;
+  font-weight: 400;
+  font-size: 1.6rem;
+  text-wrap: nowrap;
+}
+
+.modal__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: calc(100% - 110px);
+  margin-inline: 1rem;
+}
+
+.modal__content {
+  background: #f6f3f3;
+  border-radius: 20px;
+  color: #505050;
+  padding: 1rem;
+  width: 100%;
+}
+
+.modal__body .modal__link {
+  margin-top: 1rem;
+  margin-inline: 1rem;
+  background: #f6f3f3;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #4362a5;
+}
+
+@media (width > 768px) {
+  .modal__container {
+    width: 500px;
+  }
+
+  .modal__img-container {
+    width: 130px;
+    height: 130px;
+  }
+
+  .modal__header h2 {
+    margin-left: 9.5rem;
+    font-size: 1.8rem;
+  }
+
+  .modal__content {
+    font-size: 1.3rem;
+  }
+
+  .modal__body .modal__link {
+    font-size: 1.3rem;
+  }
+}

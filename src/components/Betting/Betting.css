@@ -1,0 +1,183 @@
+.betting-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 1rem;
+  padding-left: 1rem;
+}
+
+.bet-status {
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 56px;
+  margin-bottom: 20px;
+}
+
+.bets-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.bet-box {
+  width: 100%;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+
+.red-bet {
+  border: 1px solid #ff0000;
+}
+
+.green-bet {
+  border: 1px solid #00be06;
+}
+
+.red-bet h3 {
+  padding: 0.5rem;
+  font-size: 0.8em;
+  background-color: #ff0000;
+}
+
+.green-bet h3 {
+  padding: 0.5rem;
+  font-size: 0.8em;
+  background-color: #00be06;
+}
+
+.bet-box p {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.bet-box button {
+  padding: 5px 10px;
+  font-size: 0.7em;
+  color: black;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.green-bet button {
+  background-color: #00be06;
+  color: white;
+}
+
+.red-bet button {
+  background-color: #ff0000;
+  color: white;
+}
+
+.playing-amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.1em;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid yellow;
+  border-radius: 102px;
+}
+
+.quick-bets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.quick-bets-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.quick-bets button {
+  min-width: 80px;
+  padding-block: 0.5rem;
+  background: linear-gradient(90deg, #ffcc00 0%, #6f5800 100%);
+  padding: 0.5rem 1rem;
+  color: black;
+  font-weight: 700;
+  border: none;
+  border-radius: 58px;
+  cursor: pointer;
+}
+
+.submit-bet {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 1.1em;
+  background: linear-gradient(270deg, #ffcc00 0%, #4d3e05 58%, #181717 100%);
+  color: white;
+  border: none;
+  border-radius: 54px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn__all-in {
+  width: 100px;
+  background-color: gold;
+  color: black;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+  transition: transform 0.3s ease-in-out;
+}
+
+.btn__all-in:hover {
+  transform: scale(1.1);
+}
+
+.quick-bets-input {
+  width: 100%;
+  text-align: center;
+  background-color: transparent;
+  border: none;
+  background: linear-gradient(90deg, #ffcc00 0%, #6f5800 100%);
+  border-radius: 20px;
+  color: black;
+}
+
+.quick-bets-input::placeholder {
+  color: black;
+}
+
+.quick-bets-input:focus {
+  outline: none;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px gold, 0 0 20px gold;
+  }
+  50% {
+    box-shadow: 0 0 20px orange, 0 0 30px orange;
+  }
+}
+
+@media (width < 1280px) {
+  .betting-app {
+    width: calc(100vw - 1.1rem);
+    padding: 1rem 2rem;
+  }
+}

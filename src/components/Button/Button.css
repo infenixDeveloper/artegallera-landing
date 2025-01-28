@@ -1,0 +1,61 @@
+.button__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 4rem;
+  padding-inline: 2rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 5.25rem;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.button__container.outline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 5.25rem;
+  padding: 2px;
+  background: linear-gradient(90deg, #a3981a 0%, #201d1d 100%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+.button__container.filled {
+  background: linear-gradient(90deg, #b5a817 0%, #494409 50.5%, #000000 100%);
+}
+
+.button__container .button__icon {
+  width: 40px;
+  height: 40px;
+}
+
+.button__container .button__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.button__container .button__title {
+  width: calc(100% - 24px);
+  font-size: 1.2rem;
+}
+
+@media (width > 992px) {
+  .button__container {
+    min-width: 250px;
+  }
+
+  .button__container .button__title {
+    text-align: start;
+    font-size: 1.2rem;
+  }
+}

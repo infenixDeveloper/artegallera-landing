@@ -1,0 +1,123 @@
+.login-modal__overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: #d9d9d980;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.login-modal__overlay.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.login-modal__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+  height: 500px;
+  border-radius: 21px;
+  background: linear-gradient(180deg, #494209 0%, #000000 100%);
+  visibility: hidden;
+  opacity: 0;
+  padding: 1rem 3rem;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.login-modal__btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.login-modal__container.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.login-modal__user-logo {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  background-color: #d9d9d9;
+  border-radius: 50%;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.login-modal__user-img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0.7rem;
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+}
+
+.login-modal__container h3 {
+  font-weight: 400;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+}
+
+.login-modal__label {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-modal__form-input {
+  padding: 0.5rem;
+  padding-left: 2.5rem;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.input-logo {
+  position: absolute;
+  left: 0.5rem;
+  width: 20px;
+  height: 20px;
+}
+
+.login-modal__check,
+.login-modal__link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: white;
+}
+
+.login-modal__check-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-modal__error {
+  color: red;
+  font-size: 1.1rem;
+}
