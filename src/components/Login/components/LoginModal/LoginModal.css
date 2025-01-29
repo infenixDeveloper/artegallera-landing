@@ -7,10 +7,11 @@
   left: 0;
   width: 100%;
   min-height: 100dvh;
-  background-color: #d9d9d980;
+  background-color: #000000ba;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: 9999;
 }
 
 .login-modal__overlay.open {

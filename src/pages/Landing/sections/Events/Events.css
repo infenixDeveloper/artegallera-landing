@@ -1,0 +1,129 @@
+.events__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+  overflow: hidden;
+}
+
+.events__img {
+  height: 100%;
+  /* Hereda la altura del contenedor padre */
+  display: flex;
+  align-items: center;
+  /* Centra el contenido */
+  justify-content: center;
+}
+
+.events__img video {
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
+.events__img {
+  width: 300px;
+  height: 100px;
+}
+
+.events__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.events__header img {
+  width: 100px;
+}
+
+.events__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin-top: 4rem;
+}
+
+.events__content img {
+  display: none;
+  width: 250px;
+}
+
+.events__header-info {
+  text-align: center;
+}
+
+.events__header-info h1 {
+  font-size: 1rem;
+  padding: .5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, #b5a817 0%, #4f490a 100%);
+}
+
+.events__header-info p {
+  text-wrap: nowrap;
+}
+
+.events__header-info p .time {
+  font-size: .8rem;
+  border: 1px solid white;
+  padding: .5rem .5rem;
+  text-wrap: nowrap;
+}
+
+.events__header-info p .date {
+  font-size: .8rem;
+  border: 1px solid white;
+  padding: .5rem .5rem;
+  text-wrap: nowrap;
+}
+
+.logo-img__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logo-img__container img {
+  z-index: 1;
+}
+
+@media (width > 768px) {
+
+  .events__header-info h1 {
+    font-size: 2rem;
+    padding: .5rem 1rem;
+  }
+
+  .events__header-info p .time,
+  .events__header-info p .date {
+    font-size: 1.3rem;
+    padding: .5rem 1rem;
+  }
+}
+
+@media (width > 992px) {
+
+  .events__content img {
+    display: block;
+    width: 15%;
+    min-width: 200px;
+  }
+
+  .events__header img {
+    display: none;
+  }
+}
+
+@media (width > 1440px) {
+  .events__content img {
+    display: block;
+    width: 20%;
+    min-width: 200px;
+    margin: 0 2rem;
+  }
+}

@@ -7,10 +7,9 @@ const UserPanel = ({ name }) => {
     <>
       <Box sx={{ display: "grid" }}>
         <Typography align="center" p={2}>
-          {name}
         </Typography>
         <div className="user-panel-stream">
-          <Stream />
+          <Stream title={name} />
         </div>
       </Box>
     </>

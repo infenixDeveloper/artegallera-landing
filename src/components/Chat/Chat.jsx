@@ -100,19 +100,19 @@ const Chat = () => {
         boxShadow: "0 0 10px rgba(0,0,0,0.2)",
         transform: isOpen ? "translateX(0)" : "translateX(100%)",
         zIndex: 10,
+
+
       }}
     >
       {/* Botón para abrir/cerrar */}
       <Box>
         <Tooltip title={isOpen ? "Cerrar" : "Abrir"} placement="left">
-          <IconButton
-            sx={{ position: "absolute", left: isOpen ? "1rem" : "-50px" , color: "white"}}
+          <Button
+            sx={{ position: "absolute", left: isOpen ? ".5rem" : "-90px", color: "white" }}
             onClick={() => dispatch(toggleChat())}
           >
-            <StartIcon
-              sx={{ transform: isOpen ? "rotate(0)" : "rotate(180deg)" }}
-            />
-          </IconButton>
+            {isOpen ? "Cerrar" : <Typography display="flex" alignItems="center" gap={".2rem"}> <StartIcon sx={{ transform: isOpen ? "rotate(0)" : "rotate(180deg)" }} /> Chat</Typography>}
+          </Button>
         </Tooltip>
       </Box>
 
@@ -189,7 +189,7 @@ const Chat = () => {
                 color: "error.main",
                 width: "36px",
                 height: "34px",
-        
+
               }}
             >
               {formatTime(timeRemaining)}

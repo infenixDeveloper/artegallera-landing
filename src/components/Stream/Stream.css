@@ -1,15 +1,36 @@
 .stream__container {
   display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 1rem;
 }
 
-@media (width >= 768px) {
+.stream__data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: .5rem;
+}
+
+.stream__data span {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.stream__data h2 {
+  color: white;
+  font-weight: 400;
+}
+
+@media (width >=768px) {
   .stream__container {
     max-width: 800px;
   }
 }
-@media (width >= 1440px) {
+
+@media (width >=1440px) {
   .stream__container {
     width: 100%;
     max-width: none;
