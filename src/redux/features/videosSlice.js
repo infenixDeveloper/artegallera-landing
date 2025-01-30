@@ -5,7 +5,7 @@ export const getPromotions = createAsyncThunk("api/promotions", async () => {
   try {
     const response = await api.get("/video");
 
-    return response.data;
+    return response.data.promotions;
 
   } catch (error) {
     console.error(error);
@@ -16,7 +16,7 @@ export const getPromotions = createAsyncThunk("api/promotions", async () => {
 const promotionsSlice = createSlice({
   name: "promotions",
   initialState: {
-    promotions: [],
+    videos: [],
     status: null,
     loading: null,
     error: null,
@@ -29,7 +29,7 @@ const promotionsSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPromotions.fulfilled, (state, action) => {
-        state.promotions = action.payload;
+        state.videos = action.payload;
         state.loading = false;
         state.status = "success";
       })

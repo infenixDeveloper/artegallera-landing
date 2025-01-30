@@ -61,7 +61,6 @@ function Betting({ balance, user, event }) {
     socketRef.current = io(import.meta.env.VITE_API_URL_BETS);
 
     socketRef.current.on("connect", () => {
-      console.log("Conectado al servidor de apuestas");
     });
 
     dispatch(getLastEvent());
@@ -123,6 +122,8 @@ function Betting({ balance, user, event }) {
             message: response.message,
             bgColor: "error",
           });
+          setUserGreenAmount((prev) => prev - response.greenBet.amount);
+          setUserRedAmount((prev) => prev - response.redBet.amount);
           setStatusMessage(response.message)
         } else if (response.greenBet.id_user === userId) {
           setSnackbar({
@@ -157,7 +158,8 @@ function Betting({ balance, user, event }) {
         }
       }
     );
-  }, [roundId, userRedAmount, userGreenAmount, isBettingActive])
+  }, [roundId, isBettingActive, statusMessage])
+
 
   useEffect(() => {
     socketRef.current.on("getActiveRounds", (response) => {

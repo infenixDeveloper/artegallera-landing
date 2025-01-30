@@ -30,7 +30,6 @@ const UserLayout = () => {
     socket.current = io(import.meta.env.VITE_API_URL_BETS);
 
     socket.current.on("connect", () => {
-      console.log("Conectado al servidor de apuestas");
     });
 
     return () => {

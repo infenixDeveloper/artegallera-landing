@@ -27,9 +27,9 @@ const Landing = () => {
       <Events name={event.name} date={event?.date} time={event?.time} />
       <button className="landing-button" onClick={() => setOpenRecharge(true)}>
         <span>
-          Recargar Saldo
+          Contantanos
         </span>
-        <WhatsAppIcon color="success" fontSize="large" /> </button>
+        <WhatsAppIcon color="white" fontSize="large" /> </button>
       <footer>
         <p>© Arte Gallera 2025. Todos los derechos reservados</p>
         <p>

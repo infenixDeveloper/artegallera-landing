@@ -13,7 +13,6 @@ import MoneyRain from "@components/MoneyRain/MoneyExplosion";
 const Events = ({ name, date, time }) => {
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.videos?.videos);
-  console.log(videos);
 
   useEffect(() => {
     dispatch(getPromotions());

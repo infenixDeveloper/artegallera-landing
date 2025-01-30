@@ -15,11 +15,12 @@ const Stream = ({ title }) => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   };
 
+  const [isLive, setIsLive] = useState(false);
+
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_API_URL_BETS);
 
     socket.current.on("connect", () => {
-      console.log("Conectado al servidor de apuestas");
     });
 
     socket.current.emit("getConnectedUsers", (response) => {
@@ -44,11 +45,10 @@ const Stream = ({ title }) => {
   }, []);
 
   useEffect(() => {
-    // Asegúrate de que el elemento `video` esté montado
     if (videoRef.current) {
       const _player = videojs(videoRef.current, {
         controls: true,
-        autoplay: !isIOS(), // Desactiva autoplay en iOS
+        autoplay: !isIOS(),
         responsive: true,
         fluid: true,
         preload: "auto",
@@ -60,7 +60,17 @@ const Stream = ({ title }) => {
           },
         ],
       });
+
+      _player.on("error", () => {
+        setIsLive(false);
+      });
+
+      _player.on("playing", () => {
+        setIsLive(true);
+      });
+
       setPlayer(_player);
+
       return () => {
         if (player !== null) {
           player.dispose();
@@ -69,13 +79,16 @@ const Stream = ({ title }) => {
     }
   }, []);
 
+
   return (
     <div className="stream__container">
       <div className="stream__data">
         <h2>{title}</h2>
-        <span>
-          <PersonIcon /> {viewers} espectadores
-        </span>
+        {isLive &&
+          <span>
+            <PersonIcon /> {viewers} espectadores
+          </span>
+        }
       </div>
       <video
         ref={videoRef}

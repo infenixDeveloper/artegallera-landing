@@ -13,7 +13,7 @@ const store = configureStore({
     theme: themeReducer,
     chat: chatReducer,
     user: userReducer,
-    promotions: promotionsReducer,
+    videos: promotionsReducer,
   },
 });
 

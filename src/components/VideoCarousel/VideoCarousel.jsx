@@ -44,7 +44,7 @@ const VideoCarousel = ({ videos }) => {
         <video
           src={
             Array.isArray(videos) && videos?.length > 0
-              ? videos[currentIndex]
+              ? `/uploads/${videos[currentIndex].file}`
               : ""
           }
           controls
@@ -61,6 +61,7 @@ const VideoCarousel = ({ videos }) => {
         {/* Indicadores con vista previa de videos */}
         <div className="video__nav">
           {videos?.slice(0, visibleThumbnails).map((video, index) => (
+
             <div
               key={index}
               style={{
@@ -73,7 +74,7 @@ const VideoCarousel = ({ videos }) => {
               onClick={() => setCurrentIndex(index)}
             >
               <video
-                src={video}
+                src={`/uploads/${video.file}`}
                 muted
                 style={{
                   width: "100%",
