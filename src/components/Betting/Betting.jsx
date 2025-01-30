@@ -19,12 +19,13 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import sound from "@assets/sounds/cashier.mp3";
 import Cookies from "js-cookie";
 import Modal2 from "@components/Modal2/Modal2";
+import { useSnackbar, closeSnackbar } from 'notistack';
 
 function Betting({ balance, user, event }) {
   const socketRef = useRef(null);
   const dispatch = useDispatch();
   const userId = JSON.parse(Cookies.get("data")).id;
-
+  const { enqueueSnackbar } = useSnackbar();
   const [betAmount, setBetAmount] = useState(0);
   const [betStatus, setBetStatus] = useState("");
   const [team, setTeam] = useState("");
@@ -47,7 +48,7 @@ function Betting({ balance, user, event }) {
   const [openModal, setOpenModal] = useState(false);
   const [userRedAmount, setUserRedAmount] = useState(0)
   const [userGreenAmount, setUserGreenAmount] = useState(0)
-
+  const [amoutnCount, setAmoutnCount] = useState(0)
 
   const { vertical, horizontal, open } = snackbar;
 
@@ -95,45 +96,97 @@ function Betting({ balance, user, event }) {
         setStatusMessage("");
 
         if (response.redBet.id_user === userId) {
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            message: response.message,
-            bgColor: "success",
+          enqueueSnackbar(response.message, {
+            variant: "success",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "center",
+            },
+            action: (key) => (
+              <IconButton onClick={() => closeSnackbar(key)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
+                <CloseIcon />
+              </IconButton>
+            ),
           });
+
+          // setSnackbar({
+          //   ...snackbar,
+          //   open: true,
+          //   message: response.message,
+          //   bgColor: "success",
+          // });
+
           setStatusMessage(response.message)
         } else if (response.greenBet.id_user === userId) {
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            message: response.message,
-            bgColor: "success",
+          enqueueSnackbar(response.message, {
+            variant: "success",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "center",
+            },
+            action: (key) => (
+              <IconButton onClick={() => closeSnackbar(key)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
+                <CloseIcon />
+              </IconButton>
+            ),
           });
+
+          // setSnackbar({
+          //   ...snackbar,
+          //   open: true,
+          //   message: response.message,
+          //   bgColor: "success",
+          // });
+
           setStatusMessage(response.message)
         }
       } else if (response.status === "rejected") {
         setBetStatus(response.status);
         setStatusMessage("");
 
+        const newAmount =
+          (response.greenBet.id_user === userId ? response.greenBet.amount : 0) +
+          (response.redBet.id_user === userId ? response.redBet.amount : 0);
+
+
         if (response.redBet.id_user === userId) {
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            message: response.message,
-            bgColor: "error",
+          setAmoutnCount(prev => {
+            const updatedAmount = prev + newAmount;
+
+            setSnackbar({
+              ...snackbar,
+              open: true,
+              message: `Su Apuesta por $${updatedAmount} fue declinada`,
+              bgColor: "error",
+            });
+
+            setStatusMessage(`Su Apuesta por $${updatedAmount} fue declinada`)
+            return updatedAmount;
           });
           setUserGreenAmount((prev) => prev - response.greenBet.amount);
           setUserRedAmount((prev) => prev - response.redBet.amount);
-          setStatusMessage(response.message)
+
         } else if (response.greenBet.id_user === userId) {
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            message: response.message,
-            bgColor: "error",
+          setAmoutnCount(prev => {
+            const updatedAmount = prev + newAmount;
+
+            setSnackbar({
+              ...snackbar,
+              open: true,
+              message: `Su Apuesta por $${updatedAmount} fue declinada`,
+              bgColor: "error",
+            });
+
+            setStatusMessage(`Su Apuesta por $${updatedAmount} fue declinada`)
+            return updatedAmount;
           });
-          setStatusMessage(response.message)
+
+          setUserGreenAmount((prev) => prev - response.greenBet.amount);
+          setUserRedAmount((prev) => prev - response.redBet.amount);
         }
+        setTimeout(() => {
+          setAmoutnCount(0)
+        }, 3000);
         dispatch(getUser(userId));
       }
     });
@@ -155,6 +208,25 @@ function Betting({ balance, user, event }) {
           setUserRedAmount(response.red)
         } else {
 
+        }
+      }
+    );
+
+    socketRef.current.emit(
+      "getRoundStatus",
+      { id: roundId, id_event: event?.id },
+      (response) => {
+        if (response.success) {
+          setIsBettingActive(
+            response.data.round?.filter((r) => r.id === roundId)[0]
+              .is_betting_active
+          );
+
+        } else {
+          console.error(
+            "Error al obtener el estado del evento:",
+            response.message
+          );
         }
       }
     );
@@ -223,7 +295,32 @@ function Betting({ balance, user, event }) {
         setStatusMessage("");
       }
     });
-  }, [event]);
+  }, [event, isBettingActive]);
+
+
+  useEffect(() => {
+    const idRound = localStorage.getItem("roundId");
+    socketRef.current.emit(
+      "getRoundStatus",
+      { id: idRound, id_event: event?.id },
+      (response) => {
+
+        if (response.success) {
+          setIsBettingActive(
+            response.data.round?.filter((r) => r.id === roundId)[0]
+              .is_betting_active
+          );
+
+        } else {
+          console.error(
+            "Error al obtener el estado del evento:",
+            response.message
+          );
+        }
+      }
+    );
+  }, [rounds, event, isBettingActive]);
+
 
   useEffect(() => {
     const idRound = localStorage.getItem("roundId");
@@ -249,25 +346,6 @@ function Betting({ balance, user, event }) {
         }
       );
     }
-
-    socketRef.current.emit(
-      "getRoundStatus",
-      { id: idRound, id_event: event?.id },
-      (response) => {
-        if (response.success) {
-          setIsBettingActive(
-            response.data.round?.filter((r) => r.id === roundId)[0]
-              .is_betting_active
-          );
-
-        } else {
-          console.error(
-            "Error al obtener el estado del evento:",
-            response.message
-          );
-        }
-      }
-    );
 
     if (roundId && !isBettingActive) {
       // Forzar la actualización de las apuestas al cerrar
@@ -310,7 +388,7 @@ function Betting({ balance, user, event }) {
       }
     );
 
-  }, [event, rounds, isBettingActive, betStatus]);
+  }, [event, redBet, greenBet, isBettingActive, betStatus, statusMessage]);
 
   useEffect
 

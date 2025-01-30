@@ -9,53 +9,60 @@ const MoneyExplosion = () => {
 
   // Función para crear la explosión de billetes
   const createMoneyExplosion = () => {
-    const container = containerRef.current; // Usar la referencia del div container
+    const container = containerRef.current;
+    if (!container) return;
 
-    if (!container) return; // Si no hay contenedor, salir de la función
-
-    // Obtener el tamaño y la posición del contenedor
     const containerWidth = container.offsetWidth;
     const containerHeight = container.offsetHeight;
 
-    // Crear 30 billetes por cada explosión
-    for (let i = 0; i < 30; i++) {
+    const totalBills = 200;
+    const angleStep = (2 * Math.PI) / totalBills; // Distribuir los ángulos equitativamente
+
+    for (let i = 0; i < totalBills; i++) {
       let bill = document.createElement("img");
       bill.src = moneyImg;
-      bill.classList.add("money"); // Agregar clase de estilo
+      bill.classList.add("money");
 
-      // Posición inicial en el centro del contenedor
-      let x = containerWidth / 1.8;
-      let y = containerHeight / 1.8;
+      // Obtener el centro del contenedor
+      let centerX = containerWidth / 2;
+      let centerY = containerHeight / 2;
 
-      // Ángulo aleatorio para dispersar los billetes (en radianes)
-      let angle = Math.random() * 2 * Math.PI;
-      // Distancia aleatoria para la explosión
-      let distance = Math.random() * 200 + 100; // Distancia entre 100px y 300px
+      // Distribuir los ángulos uniformemente y añadir variación mínima
+      let angle = i * angleStep * 2; // Variación sutil
 
-      // Calculamos las coordenadas finales con el ángulo y la distancia
-      let endX = x + Math.cos(angle) * distance;
-      let endY = y + Math.sin(angle) * distance;
+      let distance = Math.random() * 100 + 100; // Distancia controlada (100 a 300px)
 
-      // Establecer las propiedades de los billetes, con el movimiento aleatorio
-      bill.style.left = `${x - 25}px`; // Desplazamos para centrar la imagen
-      bill.style.top = `${y - 25}px`;  // Desplazamos para centrar la imagen
+      // Posición final del billete
+      let endX = centerX + Math.cos(angle) * distance * 2;
+      let endY = centerY + Math.sin(angle) * distance * 2;
+
+      // Posicionar los billetes en el centro antes de animarlos
+      bill.style.position = "absolute";
+      bill.style.left = `${centerX}px`; // Ajuste para centrar la imagen
+      bill.style.top = `${centerY}px`;
+
+      let scale = Math.random() * 0.5 + 0.5; // Escala entre 0.75 y 1.25
+      let rotation = Math.random(); // Rotación aleatoria
+
+      bill.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+
       container.appendChild(bill);
 
-      // Añadir variables de posición final para la animación
-      bill.style.setProperty('--endX', `${endX - x}px`);
-      bill.style.setProperty('--endY', `${endY - y}px`);
+      // Variables para la animación
+      bill.style.setProperty("--endY", `${endY - (centerY)}px`);
+      bill.style.setProperty("--endX", `${endX - (centerX * 1.5)}px`);
 
-      // Animación para desplazar los billetes
       bill.style.animation = `fly 2s ease-out forwards`;
 
-      // Eliminar los billetes después de 2 segundos
-      setTimeout(() => bill.remove(), 2000);
+      // Eliminar el billete después de la animación
+      setTimeout(() => bill.remove(), 4000);
     }
   };
 
+
   // Ejecutar la función cada 2 segundos
   useEffect(() => {
-    const interval = setInterval(createMoneyExplosion, 2000);
+    const interval = setInterval(createMoneyExplosion, 3000);
 
     // Limpiar el intervalo al desmontar el componente
     return () => clearInterval(interval);
