@@ -11,11 +11,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PaidIcon from '@mui/icons-material/Paid';
 
-const Header = () => {
+const Header = ({ live }) => {
   const [scrolled, setScrolled] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openRecharge, setOpenRecharge] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [inLive, setInLive] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +47,12 @@ const Header = () => {
               }}
             /> Menu
           </button>
+          {live ? (
+            <div className="header__nav-live desktop">
+              <span></span>
+              <p>{live ? "En Vivo" : ""}</p>
+            </div>
+          ) : ""}
           <div
             className={`menu-overlay ${toggleMenu ? "open" : ""}`}
             onClick={() => setToggleMenu(false)}
@@ -66,6 +73,14 @@ const Header = () => {
             </li>
             <li>
               <Link onClick={() => setOpenRecharge(true)}><PaidIcon /> Recargar Saldo</Link>
+            </li>
+            <li>
+              {live ? (
+                <div className="header__nav-live mobile">
+                  <span></span>
+                  <p>{live ? "En Vivo" : ""}</p>
+                </div>
+              ) : ""}
             </li>
           </ul>
 

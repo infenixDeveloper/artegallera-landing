@@ -7,6 +7,7 @@ import { getPromotions } from "@redux/features/videosSlice";
 import Header from "./sections/Header/Header";
 import Events from "./sections/Events/Events";
 import Modal from "@components/Modal/Modal";
+import api from "@services/api";
 
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
@@ -16,14 +17,29 @@ const Landing = () => {
   const dispatch = useDispatch();
   const event = useSelector((state) => state.lastEvent.event);
   const [openRecharge, setOpenRecharge] = useState(false);
+  const [isLive, setIsLive] = useState(false);
+
   useEffect(() => {
     dispatch(getLastEvent());
     dispatch(getPromotions());
   }, [dispatch]);
 
+  useEffect(() => {
+    const fetchStream = async () => {
+      try {
+        const response = await api.get("https://stream.artegallera.com/livestream/live.m3u8");
+        if (response.status === 200) {
+          setIsLive(true);
+        }
+      } catch (error) {
+      }
+    };
+    fetchStream();
+  }, []);
+
   return (
     <>
-      <Header />
+      <Header live={isLive} />
       <Events name={event.name} date={event?.date} time={event?.time} />
       <button className="landing-button" onClick={() => setOpenRecharge(true)}>
         <span>
