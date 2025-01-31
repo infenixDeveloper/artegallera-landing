@@ -1,0 +1,11 @@
+/* Contenedor para los billetes */
+.rain {}
+
+/* Estilo de cada billete */
+.money-rain {
+    position: absolute;
+    top: -50px;
+    width: 50px;
+    height: 25px;
+    background: url('https://pngimg.com/uploads/money/money_PNG3500.png') no-repeat center/contain;
+}

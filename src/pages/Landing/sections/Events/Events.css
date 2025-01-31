@@ -1,4 +1,5 @@
 .events__container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,10 +11,8 @@
 
 .events__img {
   height: 100%;
-  /* Hereda la altura del contenedor padre */
   display: flex;
   align-items: center;
-  /* Centra el contenido */
   justify-content: center;
 }
 
@@ -53,6 +52,7 @@
 
 .events__header-info {
   text-align: center;
+  z-index: 3;
 }
 
 .events__header-info h1 {

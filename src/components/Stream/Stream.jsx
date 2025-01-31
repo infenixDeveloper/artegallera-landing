@@ -24,7 +24,7 @@ const Stream = ({ title }) => {
     });
 
     socket.current.emit("getConnectedUsers", (response) => {
-      setViewers(20 + Math.floor(response.connectedUsers / 3)); // Ajuste inicial
+      setViewers(20 + Math.floor(response.connectedUsers / 3));
     });
 
     socket.current.on("connectedUsersUpdated", (data) => {
