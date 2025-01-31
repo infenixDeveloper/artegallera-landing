@@ -43,7 +43,7 @@ const Landing = () => {
       <Events name={event.name} date={event?.date} time={event?.time} />
       <button className="landing-button" onClick={() => setOpenRecharge(true)}>
         <span>
-          Contantanos
+          Contactanos
         </span>
         <WhatsAppIcon color="white" fontSize="large" /> </button>
       <footer>

@@ -9,10 +9,11 @@ import logo from "@assets/images/arte-gallera-logo-2.png";
 
 import "./Events.css";
 import MoneyRain from "@components/MoneyRain/MoneyExplosion";
+import { Typography } from "@mui/material";
 
 const Events = ({ name, date, time }) => {
   const dispatch = useDispatch();
-  const videos = useSelector((state) => state.videos?.videos);
+  const videos = useSelector((state) => state.videos.videos.filter((video) => video.is_event_video === false));
 
   useEffect(() => {
     dispatch(getPromotions());
@@ -46,10 +47,18 @@ const Events = ({ name, date, time }) => {
       <section className="events__container" id="event">
         <div className="events__header">
           <img src={logo} alt="Arte Gallera Logo" />
-          <div className="events__header-info">
-            <h1>{name}</h1>
-            <p><span className="date">{formatDate(date)}</span> - <span className="time">{formatTime(time)}</span></p>
-          </div>
+          {
+            name && date && time ? (
+
+              <div className="events__header-info">
+                <h1>{name}</h1>
+                <p><span className="date">{formatDate(date)}</span> - <span className="time">{formatTime(time)}</span></p>
+              </div>
+            ) :
+              <Typography variant="h4">
+                Proximo evento a confirmar
+              </Typography>
+          }
           <img src={logo} alt="Arte Gallera Logo" />
         </div>
         <div className="events__content">

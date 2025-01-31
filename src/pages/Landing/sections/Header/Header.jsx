@@ -10,15 +10,24 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PaidIcon from '@mui/icons-material/Paid';
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getPromotions } from "@redux/features/videosSlice";
 
 const Header = ({ live }) => {
   const [scrolled, setScrolled] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openRecharge, setOpenRecharge] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [inLive, setInLive] = useState(true);
+
+  const dispatch = useDispatch();
+  const videos = useSelector(state => state.videos.videos.filter(video => video.is_event_video === true));
+
+  console.log(videos[0]?.file);
+
 
   useEffect(() => {
+    dispatch(getPromotions());
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setScrolled(true);
@@ -31,6 +40,7 @@ const Header = ({ live }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+
   }, []);
 
   return (
@@ -47,12 +57,12 @@ const Header = ({ live }) => {
               }}
             /> Menu
           </button>
-          {live ? (
-            <div className="header__nav-live desktop">
-              <span></span>
-              <p>{live ? "En Vivo" : ""}</p>
-            </div>
-          ) : ""}
+
+          <div className="header__nav-live desktop">
+            <span className={live ? "circle-online" : "circle-offline"}></span>
+            <p>{live ? "EN VIVO" : "OFFLINE"}</p>
+          </div>
+
           <div
             className={`menu-overlay ${toggleMenu ? "open" : ""}`}
             onClick={() => setToggleMenu(false)}
@@ -75,12 +85,10 @@ const Header = ({ live }) => {
               <Link onClick={() => setOpenRecharge(true)}><PaidIcon /> Recargar Saldo</Link>
             </li>
             <li>
-              {live ? (
-                <div className="header__nav-live mobile">
-                  <span></span>
-                  <p>{live ? "En Vivo" : ""}</p>
-                </div>
-              ) : ""}
+              <div className="header__nav-live mobile">
+                <span className={live ? "circle-online" : "circle-offline"}></span>
+                <p>{live ? "EN VIVO" : "OFFLINE"}</p>
+              </div>
             </li>
           </ul>
 
@@ -91,10 +99,12 @@ const Header = ({ live }) => {
         </nav>
 
         <div className="header__content">
-          <video autoPlay loop muted playsInline>
-            <source src={""} type="video/mp4" />
-            Tu navegador no soporta videos.
-          </video>
+          {videos[0]?.file && (
+            <video autoPlay loop muted playsInline >
+              <source src={`/uploads/${videos[0]?.file}`} type="video/mp4" />
+              Tu navegador no soporta videos.
+            </video>
+          )}
           <div class="header__overlay"></div>
           <div className="header__title"></div>
           <Typography variant="h1">

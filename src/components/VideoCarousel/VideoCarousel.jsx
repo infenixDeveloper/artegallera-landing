@@ -1,40 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./VideoCarousel.css";
-import { useEffect } from "react";
 
 const VideoCarousel = ({ videos }) => {
-  // Lista de videos (pueden ser URLs o rutas locales)
   const [visibleThumbnails, setVisibleThumbnails] = useState(3);
-
-  // Estado para el índice actual
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Funciones para cambiar el video
+  // Calcula el inicio del carrusel
+  const startIndex = Math.max(
+    0,
+    Math.min(currentIndex - Math.floor(visibleThumbnails / 2), videos.length - visibleThumbnails)
+  );
+
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? videos?.length - 1 : prevIndex - 1
+      prevIndex === 0 ? videos.length - 1 : prevIndex - 1
     );
   };
 
   const goToNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === videos?.length - 1 ? 0 : prevIndex + 1
+      prevIndex === videos.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   useEffect(() => {
     const updateThumbnails = () => {
-      if (window.innerWidth <= 768) {
-        setVisibleThumbnails(2); // Muestra 2 en móvil
-      } else {
-        setVisibleThumbnails(3); // Muestra 3 en pantallas grandes
-      }
+      setVisibleThumbnails(window.innerWidth <= 768 ? 2 : 3);
     };
 
-    updateThumbnails(); // Ajusta al cargar
-    window.addEventListener("resize", updateThumbnails); // Ajusta al redimensionar
-
-    return () => window.removeEventListener("resize", updateThumbnails); // Limpia el listener
+    updateThumbnails();
+    window.addEventListener("resize", updateThumbnails);
+    return () => window.removeEventListener("resize", updateThumbnails);
   }, []);
 
   return (
@@ -42,36 +38,26 @@ const VideoCarousel = ({ videos }) => {
       {/* Video principal */}
       <div>
         <video
-          src={
-            Array.isArray(videos) && videos?.length > 0
-              ? `/uploads/${videos[currentIndex].file}`
-              : ""
-          }
+          src={videos.length > 0 ? `/uploads/${videos[currentIndex].file}` : ""}
           controls
         ></video>
       </div>
 
       {/* Controles */}
       <div className="video__nav-container">
-        {/* Botón Anterior */}
-        <button className="video__btn-controller" onClick={goToPrevious}>
+        <button className="video__btn-controller left" onClick={goToPrevious}>
           ◀
         </button>
 
-        {/* Indicadores con vista previa de videos */}
         <div className="video__nav">
-          {videos?.slice(0, visibleThumbnails).map((video, index) => (
-
+          {videos.slice(startIndex, startIndex + visibleThumbnails).map((video, index) => (
             <div
-              key={index}
+              key={startIndex + index}
               style={{
-                border:
-                  index === currentIndex
-                    ? "1px solid #e9c524"
-                    : "1px solid transparent",
+                border: startIndex + index === currentIndex ? "1px solid #e9c524" : "1px solid transparent",
               }}
               className="video__nav-view"
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => setCurrentIndex(startIndex + index)}
             >
               <video
                 src={`/uploads/${video.file}`}
@@ -80,15 +66,14 @@ const VideoCarousel = ({ videos }) => {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  pointerEvents: "none", // Evita cualquier interacción
+                  pointerEvents: "none",
                 }}
               ></video>
             </div>
           ))}
         </div>
 
-        {/* Botón Siguiente */}
-        <button className="video__btn-controller" onClick={goToNext}>
+        <button className="video__btn-controller right" onClick={goToNext}>
           ▶
         </button>
       </div>

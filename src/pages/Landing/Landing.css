@@ -109,7 +109,7 @@
 footer {
   width: 100%;
   background-color: #000000;
-  padding: 1rem;
+  padding: 2rem 1rem;
   text-align: center;
   font-size: 0.8rem;
 }
@@ -154,6 +154,7 @@ footer {
 }
 
 .landing-button span {
+  display: none;
   position: absolute;
   right: .5rem;
 }
@@ -166,8 +167,8 @@ footer {
   }
 
   .landing-button span {
+    display: block;
     visibility: hidden;
-
   }
 
   .landing-button:hover span {

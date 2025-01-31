@@ -163,8 +163,6 @@ function Betting({ balance, user, event }) {
             setStatusMessage(`Su Apuesta por $${updatedAmount} fue declinada`)
             return updatedAmount;
           });
-          setUserGreenAmount((prev) => prev - response.greenBet.amount);
-          setUserRedAmount((prev) => prev - response.redBet.amount);
 
         } else if (response.greenBet.id_user === userId) {
           setAmoutnCount(prev => {
@@ -180,9 +178,6 @@ function Betting({ balance, user, event }) {
             setStatusMessage(`Su Apuesta por $${updatedAmount} fue declinada`)
             return updatedAmount;
           });
-
-          setUserGreenAmount((prev) => prev - response.greenBet.amount);
-          setUserRedAmount((prev) => prev - response.redBet.amount);
         }
         setTimeout(() => {
           setAmoutnCount(0)
@@ -454,12 +449,6 @@ function Betting({ balance, user, event }) {
       if (response.success) {
         dispatch(getUser(user.id));
         setStatusMessage("Apuesta en proceso...");
-
-        if (team === "red") {
-          setUserRedAmount((prev) => prev + betAmount);
-        } else if (team === "green") {
-          setUserGreenAmount((prev) => prev + betAmount);
-        }
 
       } else {
         setStatusMessage("Error al realizar la apuesta: " + response.message);
