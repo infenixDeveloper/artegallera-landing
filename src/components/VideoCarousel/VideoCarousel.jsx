@@ -67,6 +67,7 @@ const VideoCarousel = ({ videos }) => {
                   height: "100%",
                   objectFit: "cover",
                   pointerEvents: "none",
+                  backgroundColor: "black"
                 }}
               ></video>
             </div>
