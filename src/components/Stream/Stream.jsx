@@ -18,22 +18,24 @@ const Stream = ({ title }) => {
   const [isLive, setIsLive] = useState(false);
 
   useEffect(() => {
-    socket.current = io(import.meta.env.VITE_API_URL_BETS);
+    socket.current = io(import.meta.env.VITE_API_URL_CHAT);
 
     socket.current.on("connect", () => {
     });
 
     socket.current.emit("getConnectedUsers", (response) => {
-      setViewers(20 + Math.floor(response.connectedUsers / 3));
+      console.log(response);
+
+      setViewers(20 + Math.floor(response.connectedUsers / 2));
     });
 
     socket.current.on("connectedUsersUpdated", (data) => {
-      setViewers(20 + Math.floor(data.connectedUsers / 3));
+      setViewers(20 + Math.floor(data.connectedUsers / 2));
     });
 
     const interval = setInterval(() => {
       socket.current.emit("getConnectedUsers", (response) => {
-        setViewers(20 + Math.floor(response.connectedUsers / 3));
+        setViewers(20 + Math.floor(response.connectedUsers / 2));
       });
     }, 60000);
 
