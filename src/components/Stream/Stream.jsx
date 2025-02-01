@@ -4,6 +4,7 @@ import "video.js/dist/video-js.css";
 import PersonIcon from '@mui/icons-material/Person';
 import "./Stream.css";
 import { io } from "socket.io-client";
+import api from "@services/api";
 
 const Stream = ({ title }) => {
   const socket = useRef(null);
@@ -16,6 +17,22 @@ const Stream = ({ title }) => {
   };
 
   const [isLive, setIsLive] = useState(false);
+
+  useEffect(() => {
+    const fetchStream = async () => {
+      try {
+        const response = await api.get("https://stream.artegallera.com/livestream/live.m3u8");
+
+        if (response.status === 200) {
+          setIsLive(true);
+        }
+      } catch (error) {
+        console.error(error);
+
+      }
+    };
+    fetchStream();
+  }, []);
 
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_API_URL_CHAT);
@@ -63,16 +80,6 @@ const Stream = ({ title }) => {
         ],
       });
 
-      _player.on("error", () => {
-        setIsLive(false);
-      });
-
-      _player.on("playing", () => {
-        setIsLive(true);
-      });
-
-      setPlayer(_player);
-
       return () => {
         if (player !== null) {
           player.dispose();
@@ -80,7 +87,6 @@ const Stream = ({ title }) => {
       };
     }
   }, []);
-
 
   return (
     <div className="stream__container">
