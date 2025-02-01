@@ -17,7 +17,7 @@ const Events = ({ name, date, time }) => {
   useEffect(() => {
     dispatch(getPromotions());
 
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 992);
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
@@ -37,7 +37,7 @@ const Events = ({ name, date, time }) => {
             </p>
           </div>
         ) : (
-          <Typography variant="h4">Próximo evento a confirmar</Typography>
+          <Typography variant="h4" align="center">Próximo evento a confirmar</Typography>
         )}
         <img src={logo} alt="Arte Gallera Logo" />
       </div>
