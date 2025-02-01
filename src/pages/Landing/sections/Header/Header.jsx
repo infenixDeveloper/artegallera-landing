@@ -60,7 +60,7 @@ const Header = ({ live }) => {
 
           <div className="header__nav-live desktop">
             <span className={live ? "circle-online" : "circle-offline"}></span>
-            <p>{live ? "EN VIVO" : "OFFLINE"}</p>
+            <p>{live ? "EN VIVO" : "Video Apagado"}</p>
           </div>
 
           <div
@@ -87,7 +87,7 @@ const Header = ({ live }) => {
             <li>
               <div className="header__nav-live mobile">
                 <span className={live ? "circle-online" : "circle-offline"}></span>
-                <p>{live ? "EN VIVO" : "OFFLINE"}</p>
+                <p>{live ? "EN VIVO" : "Video Apagado"}</p>
               </div>
             </li>
           </ul>

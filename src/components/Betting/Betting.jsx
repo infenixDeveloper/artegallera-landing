@@ -92,10 +92,12 @@ function Betting({ balance, user, event }) {
 
     socketRef.current.on("Statusbetting", (response) => {
       if (response.status === "accepted") {
-        setBetStatus(response.status);
+
         setStatusMessage("");
 
         if (response.redBet.id_user === userId) {
+          setBetStatus(true);
+          setStatusMessage(response.message)
           enqueueSnackbar(response.message, {
             variant: "success",
             anchorOrigin: {
@@ -115,9 +117,11 @@ function Betting({ balance, user, event }) {
           //   message: response.message,
           //   bgColor: "success",
           // });
+          setBetStatus(false);
 
-          setStatusMessage(response.message)
         } else if (response.greenBet.id_user === userId) {
+          setBetStatus(true);
+          setStatusMessage(response.message)
           enqueueSnackbar(response.message, {
             variant: "success",
             anchorOrigin: {
@@ -138,8 +142,8 @@ function Betting({ balance, user, event }) {
           //   bgColor: "success",
           // });
 
-          setStatusMessage(response.message)
         }
+        setBetStatus(false);
       } else if (response.status === "rejected") {
         setBetStatus(response.status);
         setStatusMessage("");
@@ -201,11 +205,13 @@ function Betting({ balance, user, event }) {
         if (response.success) {
           setUserGreenAmount(response.green)
           setUserRedAmount(response.red)
-        } else {
-
         }
       }
     );
+  }, [roundId, rounds, isBettingActive, userGreenAmount, userRedAmount, redBet, greenBet, statusMessage, amoutnCount, betStatus])
+
+  useEffect(() => {
+
 
     socketRef.current.emit(
       "getRoundStatus",
@@ -225,7 +231,7 @@ function Betting({ balance, user, event }) {
         }
       }
     );
-  }, [roundId, isBettingActive, statusMessage])
+  }, [roundId])
 
 
   useEffect(() => {
@@ -252,7 +258,7 @@ function Betting({ balance, user, event }) {
       const lastRound = rounds[rounds?.length - 1];
       setSelectedRound(rounds.length - 1); // Índice de la última ronda
       setRoundId(lastRound.id); // ID de la última ronda
-      localStorage.setItem("roundId", lastRound.id);
+      localStorage.setItem("roundId", lastRound?.id)
     }
   }, [rounds]);
 
@@ -281,6 +287,7 @@ function Betting({ balance, user, event }) {
   }, [event]);
 
   useEffect(() => {
+    const idRound = localStorage.getItem("roundId")
     socketRef.current.on("isBettingActive", (response) => {
       if (response.success) {
         response.data.id === roundId &&
@@ -288,16 +295,35 @@ function Betting({ balance, user, event }) {
 
         dispatch(getUser(userId));
         setStatusMessage("");
+
+        socketRef.current.emit(
+          "getBetStats",
+          { id_event: event?.id, team: "red", id_round: idRound },
+          (response) => {
+            if (response.success) {
+              setRedBet(response.totalAmount || 0);
+            }
+          }
+        );
+
+        socketRef.current.emit(
+          "getBetStats",
+          { id_event: event?.id, team: "green", id_round: idRound },
+          (response) => {
+            if (response.success) {
+              setGreenBet(response.totalAmount || 0);
+            }
+          }
+        );
       }
     });
-  }, [event, isBettingActive]);
+  }, [isBettingActive, redBet, greenBet]);
 
 
   useEffect(() => {
-    const idRound = localStorage.getItem("roundId");
     socketRef.current.emit(
       "getRoundStatus",
-      { id: idRound, id_event: event?.id },
+      { id: roundId, id_event: event?.id },
       (response) => {
 
         if (response.success) {
@@ -314,8 +340,7 @@ function Betting({ balance, user, event }) {
         }
       }
     );
-  }, [rounds, event, isBettingActive]);
-
+  }, [event, isBettingActive]);
 
   useEffect(() => {
     const idRound = localStorage.getItem("roundId");
@@ -346,7 +371,7 @@ function Betting({ balance, user, event }) {
       // Forzar la actualización de las apuestas al cerrar
       socketRef.current.emit(
         "getBetStats",
-        { id_event: event?.id, id_round: roundId, team: "red" },
+        { id_event: event?.id, id_round: idRound, team: "red" },
         (response) => {
           if (response.success) setRedBet(response.totalAmount || 0);
         }
@@ -354,13 +379,16 @@ function Betting({ balance, user, event }) {
 
       socketRef.current.emit(
         "getBetStats",
-        { id_event: event?.id, id_round: roundId, team: "green" },
+        { id_event: event?.id, id_round: idRound, team: "green" },
         (response) => {
           if (response.success) setGreenBet(response.totalAmount || 0);
         }
       );
     }
+  }, [roundId, isBettingActive, rounds])
 
+
+  useEffect(() => {
     socketRef.current.emit(
       "getAllActiveRounds",
       { id_event: event?.id },
@@ -383,7 +411,7 @@ function Betting({ balance, user, event }) {
       }
     );
 
-  }, [event, redBet, greenBet, isBettingActive, betStatus, statusMessage]);
+  }, [event, isBettingActive]);
 
   useEffect
 
@@ -504,7 +532,7 @@ function Betting({ balance, user, event }) {
             sx={{ width: { lg: "300px" } }}
           >
             {rounds?.map((round, index) => (
-              <Tab label={`PELEA ${round.round}`} key={round.id} />
+              <Tab sx={{ color: "white" }} label={`PELEA ${round.round}`} key={round.id} />
             ))}
           </Tabs>
         </Box>

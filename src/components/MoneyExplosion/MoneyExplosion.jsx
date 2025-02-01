@@ -62,7 +62,7 @@ const MoneyExplosion = () => {
 
   // Ejecutar la función cada 2 segundos
   useEffect(() => {
-    const interval = setInterval(createMoneyExplosion, 3000);
+    const interval = setInterval(createMoneyExplosion, 15000);
 
     // Limpiar el intervalo al desmontar el componente
     return () => clearInterval(interval);

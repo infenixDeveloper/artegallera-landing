@@ -12,8 +12,6 @@ const Events = ({ name, date, time }) => {
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.videos.videos.filter((video) => !video.is_event_video));
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
   useEffect(() => {
     dispatch(getPromotions());
 
@@ -25,7 +23,6 @@ const Events = ({ name, date, time }) => {
 
   return (
     <section className="events__container" id="event">
-      {isMobile && <MoneyRain />}
       <div className="events__header">
         <img src={logo} alt="Arte Gallera Logo" />
         {name && date && time ? (
