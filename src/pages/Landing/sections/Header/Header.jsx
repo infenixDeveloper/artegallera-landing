@@ -23,9 +23,6 @@ const Header = ({ live }) => {
   const dispatch = useDispatch();
   const videos = useSelector(state => state.videos.videos.filter(video => video.is_event_video === true));
 
-  console.log(videos[0]?.file);
-
-
   useEffect(() => {
     dispatch(getPromotions());
     const handleScroll = () => {

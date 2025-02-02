@@ -41,8 +41,6 @@ const Stream = ({ title }) => {
     });
 
     socket.current.emit("getConnectedUsers", (response) => {
-      console.log(response);
-
       setViewers(20 + Math.floor(response.connectedUsers / 2));
     });
 

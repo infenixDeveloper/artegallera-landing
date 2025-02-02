@@ -101,8 +101,6 @@ function Betting({ balance, user, event }) {
     };
   }, [dispatch]);
 
-  console.log(userGreenAmount, userGreenAmount);
-
   useEffect(() => {
     let rejectTimeout = null; // Variable para el temporizador
 
