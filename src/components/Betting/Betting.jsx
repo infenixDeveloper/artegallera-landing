@@ -58,6 +58,12 @@ function Betting({ balance, user, event }) {
 
   const cashier = new Audio(sound);
 
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+
+  useEffect(() => {
+    setUpdateTrigger(prev => !prev);
+  }, [userRedAmount, userGreenAmount]);
+
   useEffect(() => {
     socketRef.current = io(import.meta.env.VITE_API_URL_BETS);
 
@@ -90,20 +96,34 @@ function Betting({ balance, user, event }) {
       }
     });
 
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, [dispatch]);
+
+  console.log(userGreenAmount, userGreenAmount);
+
+  useEffect(() => {
+    let rejectTimeout = null; // Variable para el temporizador
+
     socketRef.current.on("Statusbetting", (response) => {
       if (response.status === "accepted") {
 
-        setStatusMessage("");
+        if (response.redBet && response.redBet.id_user === userId) {
+          setUserRedAmount((prev) => prev + response.redBet.amount);
+        }
 
-        if (response.redBet.id_user === userId) {
+        if (response.greenBet && response.greenBet.id_user === userId) {
+          setUserGreenAmount((prev) => prev + response.greenBet.amount);
+        }
+
+        if (response.redBet && response.redBet.id_user === userId) {
           setBetStatus(true);
-          setStatusMessage(response.message)
+          setStatusMessage(response.message);
+
           enqueueSnackbar(response.message, {
             variant: "success",
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "center",
-            },
+            anchorOrigin: { vertical: "top", horizontal: "center" },
             action: (key) => (
               <IconButton onClick={() => closeSnackbar(key)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
                 <CloseIcon />
@@ -111,91 +131,81 @@ function Betting({ balance, user, event }) {
             ),
           });
 
-          // setSnackbar({
-          //   ...snackbar,
-          //   open: true,
-          //   message: response.message,
-          //   bgColor: "success",
-          // });
           setBetStatus(false);
+        }
 
-        } else if (response.greenBet.id_user === userId) {
+        if (response.greenBet && response.greenBet.id_user === userId) {
           setBetStatus(true);
-          setStatusMessage(response.message)
+          setStatusMessage(response.message);
+
           enqueueSnackbar(response.message, {
             variant: "success",
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "center",
-            },
+            anchorOrigin: { vertical: "top", horizontal: "center" },
             action: (key) => (
               <IconButton onClick={() => closeSnackbar(key)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
                 <CloseIcon />
               </IconButton>
             ),
           });
-
-          // setSnackbar({
-          //   ...snackbar,
-          //   open: true,
-          //   message: response.message,
-          //   bgColor: "success",
-          // });
-
         }
+
         setBetStatus(false);
-      } else if (response.status === "rejected") {
-        setBetStatus(response.status);
-        setStatusMessage("");
+      }
 
-        const newAmount =
-          (response.greenBet.id_user === userId ? response.greenBet.amount : 0) +
-          (response.redBet.id_user === userId ? response.redBet.amount : 0);
+      if (response.status === "rejected") {
+        let newAmount = 0;
 
-
-        if (response.redBet.id_user === userId) {
-          setAmoutnCount(prev => {
-            const updatedAmount = prev + newAmount;
-
-            setSnackbar({
-              ...snackbar,
-              open: true,
-              message: `Su Apuesta por $${updatedAmount} fue declinada`,
-              bgColor: "error",
-            });
-
-            setStatusMessage(`Su Apuesta por $${updatedAmount} fue declinada`)
-            return updatedAmount;
-          });
-
-        } else if (response.greenBet.id_user === userId) {
-          setAmoutnCount(prev => {
-            const updatedAmount = prev + newAmount;
-
-            setSnackbar({
-              ...snackbar,
-              open: true,
-              message: `Su Apuesta por $${updatedAmount} fue declinada`,
-              bgColor: "error",
-            });
-
-            setStatusMessage(`Su Apuesta por $${updatedAmount} fue declinada`)
-            return updatedAmount;
-          });
+        if (response.redBet && response.redBet.id_user === userId) {
+          newAmount += response.redBet.amount;
         }
 
-        setTimeout(() => {
-          setAmoutnCount(0)
-        }, 3000);
+        if (response.greenBet && response.greenBet.id_user === userId) {
+          newAmount += response.greenBet.amount;
+        }
+
+        if (newAmount > 0) {
+          setAmoutnCount((prev) => prev + newAmount);
+
+          // Si ya hay un timeout en proceso, lo limpiamos para reiniciar el contador
+          if (rejectTimeout) {
+            clearTimeout(rejectTimeout);
+          }
+
+          // Esperamos 1 segundo antes de mostrar el mensaje final con la suma total
+          rejectTimeout = setTimeout(() => {
+            setAmoutnCount((finalAmount) => {
+              if (finalAmount > 0) {
+                enqueueSnackbar(`Su Apuesta por $${finalAmount} fue declinada`, {
+                  variant: "error",
+                  anchorOrigin: { vertical: "top", horizontal: "center" },
+                  action: (key) => (
+                    <IconButton onClick={() => closeSnackbar(key)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
+                      <CloseIcon />
+                    </IconButton>
+                  ),
+                });
+
+                setStatusMessage(`Su Apuesta por $${finalAmount} fue declinada`);
+              }
+
+              return 0; // Reseteamos el contador después de mostrar el mensaje
+            });
+          }, 1000);
+        }
 
         dispatch(getUser(userId));
       }
     });
 
     return () => {
-      socketRef.current.disconnect();
+      socketRef.current.off("Statusbetting");
+      if (rejectTimeout) {
+        clearTimeout(rejectTimeout); // Limpiar timeout al desmontar
+      }
     };
-  }, [dispatch]);
+  }, []);
+
+
 
   useEffect(() => {
     const idRound = localStorage.getItem("roundId")
@@ -210,11 +220,9 @@ function Betting({ balance, user, event }) {
         }
       }
     );
-  }, [roundId, rounds, isBettingActive, userGreenAmount, userRedAmount, redBet, greenBet, statusMessage, amoutnCount, betStatus])
+  }, [isBettingActive, statusMessage, redBet, greenBet, updateTrigger])
 
   useEffect(() => {
-
-
     socketRef.current.emit(
       "getRoundStatus",
       { id: roundId, id_event: event?.id },
@@ -514,6 +522,8 @@ function Betting({ balance, user, event }) {
     </IconButton>
   );
 
+
+
   return (
     <div className="betting-app">
       {rounds.length > 0 && (
@@ -546,14 +556,14 @@ function Betting({ balance, user, event }) {
         {isBettingActive ? "APUESTAS ABIERTAS" : "APUESTAS CERRADAS"}
       </div>
 
-      {(
-        userRedAmount > 0 || userGreenAmount > 0
-      ) && (
-          <div className="playing-total-amount">Estas Jugando al
-            {userRedAmount > 0 && <p ><span className="total-red">ROJO: </span>{userRedAmount} </p>}
-            {userGreenAmount > 0 && <p><span className="total-green">VERDE: </span>{userGreenAmount} </p>}
-          </div>
-        )}
+      {(userRedAmount > 0 || userGreenAmount > 0) && (
+        <div key={updateTrigger} className="playing-total-amount">
+          Estas Jugando al
+          {userRedAmount > 0 && <p><span className="total-red">ROJO: </span>$ {userRedAmount} </p>}
+          {userGreenAmount > 0 && <p><span className="total-green">VERDE: </span>$ {userGreenAmount} </p>}
+        </div>
+      )}
+
 
 
       <div className="bets-container">

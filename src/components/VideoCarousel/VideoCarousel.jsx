@@ -60,13 +60,15 @@ const VideoCarousel = ({ videos }) => {
               onClick={() => setCurrentIndex(startIndex + index)}
             >
               <video
+                key={video.file}
                 src={`/uploads/${video.file}`}
                 muted
+                playsInline
+                preload="metadata"
                 style={{
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  pointerEvents: "none",
                 }}
               ></video>
             </div>
