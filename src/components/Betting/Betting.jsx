@@ -183,9 +183,11 @@ function Betting({ balance, user, event }) {
             return updatedAmount;
           });
         }
+
         setTimeout(() => {
           setAmoutnCount(0)
         }, 3000);
+
         dispatch(getUser(userId));
       }
     });
