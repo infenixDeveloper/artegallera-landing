@@ -38,9 +38,11 @@ const VideoCarousel = ({ videos }) => {
       {/* Video principal */}
       <div>
         <video
-          src={videos.length > 0 ? `/uploads/${videos[currentIndex].file}` : ""}
+
           controls
-        ></video>
+        >
+          <source src={videos.length > 0 ? `/uploads/${videos[currentIndex].file}` : ""} />
+        </video>
       </div>
 
       {/* Controles */}
@@ -61,7 +63,7 @@ const VideoCarousel = ({ videos }) => {
             >
               <video
                 key={video.file}
-                src={`/uploads/${video.file}`}
+
                 muted
                 playsInline
                 preload="metadata"
@@ -70,7 +72,7 @@ const VideoCarousel = ({ videos }) => {
                   height: "100%",
                   objectFit: "cover",
                 }}
-              ></video>
+              ><source src={`/uploads/${video.file}`} /></video>
             </div>
           ))}
         </div>
