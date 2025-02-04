@@ -104,9 +104,7 @@ const Header = ({ live }) => {
           )}
           <div class="header__overlay"></div>
           <div className="header__title"></div>
-          <Typography variant="h1">
-            bienvenidos a<span>arte gallera</span>
-          </Typography>
+
           <a href="#event">Proximos Eventos</a>
         </div>
       </header>
