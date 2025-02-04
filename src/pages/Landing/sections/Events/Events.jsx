@@ -14,11 +14,6 @@ const Events = ({ name, date, time }) => {
 
   useEffect(() => {
     dispatch(getPromotions());
-
-    const handleResize = () => setIsMobile(window.innerWidth <= 992);
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
 
   return (

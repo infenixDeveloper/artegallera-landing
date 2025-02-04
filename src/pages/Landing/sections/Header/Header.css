@@ -332,6 +332,10 @@
     display: none;
   }
 
+  .header__nav-live {
+    width: 100%;
+  }
+
   .header__nav-live p {
     font-size: 1.3rem;
   }
