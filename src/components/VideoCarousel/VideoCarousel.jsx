@@ -5,7 +5,12 @@ const VideoCarousel = ({ videos }) => {
   const [visibleThumbnails, setVisibleThumbnails] = useState(3);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Calcula el inicio del carrusel
+  useEffect(() => {
+    if (videos.length > 0) {
+      setCurrentIndex(0);
+    }
+  }, [videos]);
+
   const startIndex = Math.max(
     0,
     Math.min(currentIndex - Math.floor(visibleThumbnails / 2), videos.length - visibleThumbnails)
@@ -37,10 +42,15 @@ const VideoCarousel = ({ videos }) => {
     <div className="video__container">
       {/* Video principal */}
       <div>
-        <video key={currentIndex} controls>
-          <source src={videos.length > 0 ? `/uploads/${videos[currentIndex].file}` : ""} />
-        </video>
+        {videos.length > 0 && (
+          <video
+            key={currentIndex}  // 🔹 Forzar re-render al cambiar de video
+            controls
 
+          >
+            <source src={`/uploads/${videos[currentIndex].file}`} type="video/mp4" />
+          </video>
+        )}
       </div>
 
       {/* Controles */}
@@ -68,7 +78,9 @@ const VideoCarousel = ({ videos }) => {
                   height: "100%",
                   objectFit: "cover",
                 }}
-              ><source src={`/uploads/${video.file}`} /></video>
+              >
+                <source src={`/uploads/${video.file}`} type="video/mp4" />
+              </video>
             </div>
           ))}
         </div>
