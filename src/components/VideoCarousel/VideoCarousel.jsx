@@ -37,12 +37,10 @@ const VideoCarousel = ({ videos }) => {
     <div className="video__container">
       {/* Video principal */}
       <div>
-        <video
-
-          controls
-        >
+        <video key={currentIndex} controls>
           <source src={videos.length > 0 ? `/uploads/${videos[currentIndex].file}` : ""} />
         </video>
+
       </div>
 
       {/* Controles */}
@@ -62,8 +60,6 @@ const VideoCarousel = ({ videos }) => {
               onClick={() => setCurrentIndex(startIndex + index)}
             >
               <video
-                key={video.file}
-
                 muted
                 playsInline
                 preload="metadata"
