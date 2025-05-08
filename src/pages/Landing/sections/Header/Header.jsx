@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import logo from "@assets/images/arte-gallera-logo.png";
@@ -19,9 +19,30 @@ const Header = ({ live }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openRecharge, setOpenRecharge] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Inicialización
 
   const dispatch = useDispatch();
-  const videos = useSelector(state => state.videos.videos.filter(video => video.is_event_video === true));
+  const videos = useSelector(state => state.videos.videos);
+
+  // Filtrar videos según si es móvil o no
+  const filteredVideos = useMemo(() => {
+    return videos.filter(video => video.is_event_video === true && video.is_movil_video === isMobile);
+  }, [videos, isMobile]);
+
+  // Detectar tamaño de ventana y actualizar el estado de isMobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Actualiza el estado según el tamaño de la ventana
+    };
+
+    // Añadir el event listener
+    window.addEventListener("resize", handleResize);
+
+    // Limpiar el event listener cuando el componente se desmonte
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Solo se ejecuta una vez al montar el componente
 
   useEffect(() => {
     dispatch(getPromotions());
@@ -37,7 +58,6 @@ const Header = ({ live }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-
   }, []);
 
   return (
@@ -48,16 +68,12 @@ const Header = ({ live }) => {
             className={`header__nav-menu`}
             onClick={() => setToggleMenu((prev) => !prev)}
           >
-            <MenuIcon
-              sx={{
-                color: "white",
-              }}
-            /> Menu
+            <MenuIcon sx={{ color: "white" }} /> Menu
           </button>
 
           <div className="header__nav-live desktop">
             <span className={live ? "circle-online" : "circle-offline"}></span>
-            <p>{live ? "EN VIVO" : <span className="s1">Video <span className="2">Apagado</span> </span>}</p>
+            <p>{live ? "EN VIVO" : <span className="s1">Video <span className="2">Apagado</span></span>}</p>
           </div>
 
           <div
@@ -69,14 +85,10 @@ const Header = ({ live }) => {
               onClick={() => setToggleMenu(false)}
               className="menu-btn-close"
             >
-              <CloseIcon
-                sx={{
-                  color: "white",
-                }}
-              />
+              <CloseIcon sx={{ color: "white" }} />
             </button>
             <li>
-              <Link onClick={() => setOpenModal(true)}> <AccountCircleIcon /> Iniciar Sesión</Link>
+              <Link onClick={() => setOpenModal(true)}><AccountCircleIcon /> Iniciar Sesión</Link>
             </li>
             <li>
               <Link onClick={() => setOpenRecharge(true)}><PaidIcon /> Recargar Saldo</Link>
@@ -96,13 +108,13 @@ const Header = ({ live }) => {
         </nav>
 
         <div className="header__content">
-          {videos[0]?.file && (
+          {filteredVideos[0]?.file && (
             <video autoPlay loop muted playsInline >
-              <source src={`/uploads/${videos[0]?.file}`} type="video/mp4" />
+              <source src={`/uploads/${filteredVideos[0]?.file}`} type="video/mp4" />
               Tu navegador no soporta videos.
             </video>
           )}
-          <div class="header__overlay"></div>
+          <div className="header__overlay"></div>
           <div className="header__title"></div>
 
           <a href="#event">Proximos Eventos</a>

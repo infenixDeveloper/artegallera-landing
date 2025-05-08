@@ -91,7 +91,7 @@ const Stream = ({ title }) => {
       <div className="stream__data">
         <h2>{title}</h2>
         {isLive &&
-          <span>
+          <span className="icono-parpadeante">
             <PersonIcon /> {viewers} espectadores
           </span>
         }

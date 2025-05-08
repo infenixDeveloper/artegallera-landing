@@ -24,6 +24,23 @@
   font-weight: 400;
 }
 
+/* parpadeo del icono de persona */
+.icono-parpadeante {
+  animation: parpadeo-verde 1s infinite; /* Parpadeo cada 1 segundo */
+}
+
+@keyframes parpadeo-verde {
+  0% {
+    color: #fff;
+  }
+  50% {
+    color: #00ff00; /* Verde brillante */
+  }
+  100% {
+    color: #fff;
+  }
+}
+
 @media (width >=768px) {
   .stream__container {
     max-width: 800px;

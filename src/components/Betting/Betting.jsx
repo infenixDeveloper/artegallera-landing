@@ -432,15 +432,33 @@ function Betting({ balance, user, event }) {
     }
   };
 
+  // const handleInputChange = (e) => {
+  //   const value = parseFloat(e.target.value) || 0;
+  //   if (value > balance) {
+  //     setError("El saldo es insuficiente para esta apuesta.");
+  //   } else {
+  //     setBetAmount(value);
+  //     setError("");
+  //   }
+  // };
   const handleInputChange = (e) => {
-    const value = parseFloat(e.target.value) || 0;
-    if (value > balance) {
-      setError("El saldo es insuficiente para esta apuesta.");
-    } else {
-      setBetAmount(value);
-      setError("");
+    const value = e.target.value.replace(/[^0-9]/g, ""); // Permite solo números
+    const numericValue = parseInt(value, 10) || 0;
+    
+    if (numericValue > balance) {
+        setError("El saldo es insuficiente para esta apuesta.");
+    } else if (numericValue < 100 && numericValue !== 0) {
+        setError("El monto mínimo de apuesta es $100.");
+    } else if (numericValue % 50 !== 0) {
+        setError("La apuesta debe ser múltiplo de 50.");
+    }  else {
+        setError("");
     }
-  };
+
+    setBetAmount(numericValue);
+};
+
+
 
   const handleAllIn = () => {
     setBetAmount(balance);
@@ -448,6 +466,7 @@ function Betting({ balance, user, event }) {
   };
 
   const handleOpenModal = (team) => {
+    if(!(betAmount >= 100 && betAmount % 50 === 0 && betAmount % 10 === 0)) return;
     setTeam(team);
     setOpenModal(true);
   };
@@ -472,6 +491,7 @@ function Betting({ balance, user, event }) {
       setError("El saldo mínimo para apostar es de $100.");
       return;
     }
+   
 
     const betData = {
       id_user: user.id,
