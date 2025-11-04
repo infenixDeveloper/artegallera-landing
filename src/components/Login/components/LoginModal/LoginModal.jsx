@@ -63,6 +63,7 @@ const LoginModal = ({ open, close }) => {
           email: user.data.user.email,
           username: user.data.user.username,
           balance: user.data.user.initial_balance,
+          is_active_chat: user.data.user.is_active_chat !== undefined ? user.data.user.is_active_chat : true,
         })
       );
       navigate("/panel");

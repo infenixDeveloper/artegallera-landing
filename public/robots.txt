@@ -1,0 +1,14 @@
+# Robots.txt - Arte Gallera
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /perfil/
+Disallow: /*.json$
+
+# Sitemap
+Sitemap: https://artegallera.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+

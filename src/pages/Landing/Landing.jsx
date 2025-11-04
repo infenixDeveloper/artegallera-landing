@@ -40,7 +40,7 @@ const Landing = () => {
   return (
     <>
       <Header live={isLive} />
-      <Events name={event.name} date={event?.date} time={event?.time} />
+      <Events name={event?.name} date={event?.date} time={event?.time} />
       <button className="landing-button" onClick={() => setOpenRecharge(true)}>
         <span>
           Contactanos

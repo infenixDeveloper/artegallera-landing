@@ -23,7 +23,7 @@ export const getLastEvent = createAsyncThunk("api/events", async () => {
 const lastEventSlice = createSlice({
   name: "lastEvent",
   initialState: {
-    event: [],
+    event: null, // Cambiado de [] a null para indicar "sin evento"
     status: null,
     loading: null,
     error: null
