@@ -5,7 +5,7 @@ import VideoCarousel from "@components/VideoCarousel/VideoCarousel";
 import MoneyExplotion from "@components/MoneyExplosion/MoneyExplosion";
 import MoneyRain from "@components/MoneyRain/MoneyRain";
 import { Typography } from "@mui/material";
-import logo from "@assets/images/arte-gallera-logo-2.png";
+import logo from "@assets/images/arte-gallera-logo-azul.png";
 import "./Events.css";
 
 const Events = ({ name, date, time }) => {

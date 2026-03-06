@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import routes from "../routes";
+import RouteWithMeta from "@components/SEO/RouteWithMeta";
 
 import "./Layout.css";
 import { Box } from "@mui/material";
@@ -29,7 +30,13 @@ const Layout = () => {
                   key={route.name}
                   path={route.path}
                   name={route.name}
-                  element={<route.element />}
+                  element={
+                    route.meta ? (
+                      <RouteWithMeta Component={route.element} meta={route.meta} />
+                    ) : (
+                      <route.element />
+                    )
+                  }
                 />
               )
             );

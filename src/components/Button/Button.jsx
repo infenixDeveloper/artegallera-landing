@@ -5,7 +5,7 @@ const Button = ({ icon, variant, title, ...rest }) => {
   return (
     <button className={`button__container ${variant}`} {...rest}>
       <span className="button__icon">
-        <img src={icon} alt="" />
+        <img src={icon} alt={title ? `${title} icon` : "icon"} />
       </span>
       <span className="button__title">{title}</span>
     </button>

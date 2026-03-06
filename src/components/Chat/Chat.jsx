@@ -10,11 +10,9 @@ import StartIcon from "@mui/icons-material/Start";
 import BlockIcon from "@mui/icons-material/Block";
 import EmojiPicker from "./EmojiPicker";
 import MessageItem from "./MessageItem";
-import api, { baseURL } from "@services/api";
+import api from "@services/api";
 
-// Determinar la URL del socket según el entorno
-const CHAT_URL = import.meta.env.VITE_API_URL_CHAT || "wss://chat.artegallera.com";
-const socket = io(CHAT_URL);
+const socket = io("http://localhost:3001"); // Servidor de Chat en puerto 3001
 
 // Agregar logs de conexión de socket
 socket.on("connect", () => {
@@ -92,7 +90,7 @@ const Chat = () => {
     if (apiMessage.message_type === 'image' && apiMessage.image_url) {
       messageContent = {
         type: 'image',
-        url: `${baseURL}${apiMessage.image_url}`,
+        url: `http://localhost:3002${apiMessage.image_url}`,
         name: apiMessage.image_name || 'Imagen',
         text: apiMessage.content || null
       };
@@ -428,7 +426,7 @@ const Chat = () => {
       if (msgData.message_type === 'image' && msgData.image_url) {
         msgData.message = {
           type: 'image',
-          url: `${baseURL}${msgData.image_url}`,
+          url: `http://localhost:3002${msgData.image_url}`,
           name: msgData.image_name || 'Imagen',
           text: msgData.message || null
         };

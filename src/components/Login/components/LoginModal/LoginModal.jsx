@@ -89,13 +89,13 @@ const LoginModal = ({ open, close }) => {
             X
           </button>
           <div className="login-modal__user-logo">
-            <img src={userLogo} alt="" className="login-modal__user-img" />
+            <img src={userLogo} alt="Icono de usuario" className="login-modal__user-img" />
           </div>
           <h3>INICIAR SESIÓN</h3>
 
           <form className="login-modal__form" onSubmit={handleSubmit}>
             <label className="login-modal__label">
-              <img src={userIMG} alt="" className="input-logo" />
+              <img src={userIMG} alt="Icono usuario" className="input-logo" />
               <input
                 name="username"
                 className="login-modal__form-input"
@@ -105,7 +105,7 @@ const LoginModal = ({ open, close }) => {
               />
             </label>
             <label className="login-modal__label">
-              <img src={pass} alt="" className="input-logo" />
+              <img src={pass} alt="Icono contraseña" className="input-logo" />
               <input
                 name="password"
                 className="login-modal__form-input"

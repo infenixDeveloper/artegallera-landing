@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-export const baseURL = import.meta.env.MODE === 'production'
-  ? import.meta.env.VITE_API_URL_PROD
-  : import.meta.env.VITE_API_URL_DEV;
+ const baseURL = import.meta.env.MODE === 'production'
+   ? import.meta.env.VITE_API_URL_PROD
+   : import.meta.env.VITE_API_URL_DEV;
 
 
 const api = axios.create({

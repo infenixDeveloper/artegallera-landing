@@ -169,7 +169,7 @@ const Navbar = ({ balance, user }) => {
         <Container maxWidth="xl">
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <img src={logo} alt="" width={50} height={45} />
+              <img src={logo} alt="Arte Gallera" width={50} height={45} />
               <Typography
                 sx={{
                   display: { xs: "none", md: "block" },

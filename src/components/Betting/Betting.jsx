@@ -304,25 +304,32 @@ function Betting({ balance, user, event }) {
         dispatch(getUser(userId));
         setStatusMessage("");
 
-        socketRef.current.emit(
-          "getBetStats",
-          { id_event: event?.id, team: "red", id_round: idRound },
-          (response) => {
-            if (response.success) {
-              setRedBet(response.totalAmount || 0);
+        if (event?.id && idRound) {
+          const onlyAccepted = response.data.is_betting_active === false;
+          socketRef.current.emit(
+            "getBetStats",
+            { id_event: event.id, team: "red", id_round: idRound, onlyAccepted },
+            (res) => {
+              if (res.success) {
+                const amount = res.totalAmount || 0;
+                setRedBet(amount);
+                if (onlyAccepted) setGreenBet(amount);
+              }
             }
-          }
-        );
+          );
 
-        socketRef.current.emit(
-          "getBetStats",
-          { id_event: event?.id, team: "green", id_round: idRound },
-          (response) => {
-            if (response.success) {
-              setGreenBet(response.totalAmount || 0);
+          socketRef.current.emit(
+            "getBetStats",
+            { id_event: event.id, team: "green", id_round: idRound, onlyAccepted },
+            (res) => {
+              if (res.success) {
+                const amount = res.totalAmount || 0;
+                setGreenBet(amount);
+                if (onlyAccepted) setRedBet(amount);
+              }
             }
-          }
-        );
+          );
+        }
       }
     });
   }, [isBettingActive, redBet, greenBet]);
@@ -353,47 +360,33 @@ function Betting({ balance, user, event }) {
   useEffect(() => {
     const idRound = localStorage.getItem("roundId");
 
-    if (idRound) {
+    if (idRound && event?.id) {
+      const onlyAccepted = isBettingActive === false;
       socketRef.current.emit(
         "getBetStats",
-        { id_event: event?.id, team: "red", id_round: idRound },
+        { id_event: event.id, team: "red", id_round: idRound, onlyAccepted },
         (response) => {
           if (response.success) {
-            setRedBet(response.totalAmount || 0);
+            const amount = response.totalAmount || 0;
+            setRedBet(amount);
+            if (onlyAccepted) setGreenBet(amount);
           }
         }
       );
 
       socketRef.current.emit(
         "getBetStats",
-        { id_event: event?.id, team: "green", id_round: idRound },
+        { id_event: event.id, team: "green", id_round: idRound, onlyAccepted },
         (response) => {
           if (response.success) {
-            setGreenBet(response.totalAmount || 0);
+            const amount = response.totalAmount || 0;
+            setGreenBet(amount);
+            if (onlyAccepted) setRedBet(amount);
           }
         }
       );
     }
-
-    if (roundId && !isBettingActive) {
-      // Forzar la actualización de las apuestas al cerrar
-      socketRef.current.emit(
-        "getBetStats",
-        { id_event: event?.id, id_round: idRound, team: "red" },
-        (response) => {
-          if (response.success) setRedBet(response.totalAmount || 0);
-        }
-      );
-
-      socketRef.current.emit(
-        "getBetStats",
-        { id_event: event?.id, id_round: idRound, team: "green" },
-        (response) => {
-          if (response.success) setGreenBet(response.totalAmount || 0);
-        }
-      );
-    }
-  }, [roundId, isBettingActive, rounds])
+  }, [roundId, isBettingActive, rounds, event?.id])
 
 
   useEffect(() => {
