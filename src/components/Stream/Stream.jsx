@@ -8,9 +8,10 @@ import api from "@services/api";
 
 const Stream = ({ title }) => {
   const socket = useRef(null);
-  const videoRef = useRef(null); // Referencia al elemento de video
+  const videoRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [viewers, setViewers] = useState(20);
+  const intervalRef = useRef(null);
 
   const isIOS = () => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -37,25 +38,42 @@ const Stream = ({ title }) => {
   useEffect(() => {
     socket.current = io(import.meta.env.VITE_API_URL_CHAT);
 
+    const updateViewers = () => {
+      if (socket.current && socket.current.connected) {
+        socket.current.emit("getConnectedUsers", (response) => {
+          if (response && typeof response.connectedUsers === 'number') {
+            setViewers(20 + Math.floor(response.connectedUsers / 2));
+          }
+        });
+      }
+    };
+
     socket.current.on("connect", () => {
+      console.log("Socket de chat conectado");
+      // Obtener usuarios conectados inmediatamente al conectar
+      updateViewers();
     });
 
-    socket.current.emit("getConnectedUsers", (response) => {
-      setViewers(20 + Math.floor(response.connectedUsers / 2));
+    socket.current.on("disconnect", () => {
+      console.log("Socket de chat desconectado");
     });
 
+    // Escuchar actualizaciones en tiempo real del servidor
     socket.current.on("connectedUsersUpdated", (data) => {
-      setViewers(20 + Math.floor(data.connectedUsers / 2));
+      if (data && typeof data.connectedUsers === 'number') {
+        setViewers(20 + Math.floor(data.connectedUsers / 2));
+      }
     });
 
-    const interval = setInterval(() => {
-      socket.current.emit("getConnectedUsers", (response) => {
-        setViewers(20 + Math.floor(response.connectedUsers / 2));
-      });
-    }, 60000);
+    // Actualizar cada 60 segundos como respaldo (por si se pierde alguna actualización)
+    intervalRef.current = setInterval(updateViewers, 60000);
 
     return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       if (socket.current) {
+        socket.current.off("connectedUsersUpdated");
         socket.current.close();
       }
     };
@@ -78,9 +96,11 @@ const Stream = ({ title }) => {
         ],
       });
 
+      setPlayer(_player);
+
       return () => {
-        if (player !== null) {
-          player.dispose();
+        if (_player) {
+          _player.dispose();
         }
       };
     }
@@ -90,11 +110,9 @@ const Stream = ({ title }) => {
     <div className="stream__container">
       <div className="stream__data">
         <h2>{title}</h2>
-        {isLive &&
-          <span className="icono-parpadeante">
-            <PersonIcon /> {viewers} espectadores
-          </span>
-        }
+        <span className={isLive ? "icono-parpadeante" : ""}>
+          <PersonIcon /> {viewers} espectadores
+        </span>
       </div>
       <video
         ref={videoRef}

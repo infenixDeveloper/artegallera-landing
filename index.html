@@ -4,10 +4,76 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/arte-gallera-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Arte Gallera: Apuestas de gallos en línea, disfruta de la emoción de las peleas de gallos en vivo.">
+    <meta name="keywords" content="arte gallera, gallos de pelea, apuestas de gallos, peleas de gallos, gallos en vivo">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Arte Gallera">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/arte-gallera-logo.png">
     <title>Arte Gallera</title>
+  <link rel="canonical" href="https://artegallera.com/">
+  <meta name="robots" content="index, follow">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Arte Gallera — Apuestas de gallos en línea">
+  <meta property="og:description" content="Arte Gallera: Apuestas de gallos en línea, disfruta de la emoción de las peleas de gallos en vivo.">
+  <meta property="og:image" content="https://artegallera.com/arte-gallera-logo.png">
+  <meta property="og:url" content="https://artegallera.com/">
+  <meta property="og:site_name" content="Arte Gallera">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Arte Gallera — Apuestas de gallos en línea">
+  <meta name="twitter:description" content="Arte Gallera: Apuestas de gallos en línea, disfruta de la emoción de las peleas de gallos en vivo.">
+  <meta name="twitter:image" content="https://artegallera.com/arte-gallera-logo.png">
+  <meta name="twitter:site" content="@artegallera">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Arte Gallera",
+          "url": "https://artegallera.com",
+          "logo": "https://artegallera.com/arte-gallera-logo.png",
+          "sameAs": []
+        },
+        {
+          "@type": "WebSite",
+          "name": "Arte Gallera",
+          "url": "https://artegallera.com",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://artegallera.com/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

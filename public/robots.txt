@@ -1,14 +1,36 @@
-# Robots.txt - Arte Gallera
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /api/
-Disallow: /perfil/
-Disallow: /*.json$
 
-# Sitemap
+# Sitemap location
 Sitemap: https://artegallera.com/sitemap.xml
 
-# Crawl-delay
+# Crawl delay (requests per second)
 Crawl-delay: 1
 
+# Allow all JS and CSS files
+Allow: /*.js$
+Allow: /*.css$
+
+# Allow all image files
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.webp$
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /login/
+Disallow: /dashboard/
+
+# Allow social media bots
+User-agent: FacebookExternalHit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /

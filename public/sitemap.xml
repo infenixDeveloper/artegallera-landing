@@ -1,54 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <!-- Página Principal -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://artegallera.com/</loc>
-    <lastmod>2025-11-01</lastmod>
+    <loc>https://artegallera.com/arte-gallera-logo.png</loc>
+    <lastmod>2025-11-11</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  
-  <!-- Eventos -->
-  <url>
-    <loc>https://artegallera.com/eventos</loc>
-    <lastmod>2025-11-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Cómo Apostar -->
-  <url>
-    <loc>https://artegallera.com/como-apostar</loc>
-    <lastmod>2025-11-01</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Contacto -->
   <url>
-    <loc>https://artegallera.com/contacto</loc>
-    <lastmod>2025-11-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://artegallera.com/</loc>
+    <lastmod>2025-11-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
-  
-  <!-- Términos y Condiciones -->
   <url>
-    <loc>https://artegallera.com/terminos</loc>
-    <lastmod>2025-11-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <loc>https://artegallera.com/panel</loc>
+    <lastmod>2025-11-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
-  
-  <!-- Política de Privacidad -->
-  <url>
-    <loc>https://artegallera.com/privacidad</loc>
-    <lastmod>2025-11-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
 </urlset>
-
