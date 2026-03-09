@@ -313,7 +313,6 @@ function Betting({ balance, user, event }) {
               if (res.success) {
                 const amount = res.totalAmount || 0;
                 setRedBet(amount);
-                if (onlyAccepted) setGreenBet(amount);
               }
             }
           );
@@ -325,7 +324,6 @@ function Betting({ balance, user, event }) {
               if (res.success) {
                 const amount = res.totalAmount || 0;
                 setGreenBet(amount);
-                if (onlyAccepted) setRedBet(amount);
               }
             }
           );
@@ -369,7 +367,6 @@ function Betting({ balance, user, event }) {
           if (response.success) {
             const amount = response.totalAmount || 0;
             setRedBet(amount);
-            if (onlyAccepted) setGreenBet(amount);
           }
         }
       );
@@ -381,7 +378,6 @@ function Betting({ balance, user, event }) {
           if (response.success) {
             const amount = response.totalAmount || 0;
             setGreenBet(amount);
-            if (onlyAccepted) setRedBet(amount);
           }
         }
       );
