@@ -10,7 +10,7 @@ const Stream = ({ title }) => {
   const socket = useRef(null);
   const videoRef = useRef(null);
   const [player, setPlayer] = useState(null);
-  const [viewers, setViewers] = useState(20);
+  const [viewers, setViewers] = useState(0);
   const intervalRef = useRef(null);
 
   const isIOS = () => {
@@ -36,13 +36,14 @@ const Stream = ({ title }) => {
   }, []);
 
   useEffect(() => {
-    socket.current = io(import.meta.env.VITE_API_URL_CHAT);
+    // Usamos el socket de apuestas (bets) porque allí se calcula base_viewers + connectedUsers
+    socket.current = io(import.meta.env.VITE_API_URL_BETS);
 
     const updateViewers = () => {
       if (socket.current && socket.current.connected) {
         socket.current.emit("getConnectedUsers", (response) => {
-          if (response && typeof response.connectedUsers === 'number') {
-            setViewers(20 + Math.floor(response.connectedUsers / 2));
+          if (response && typeof response.connectedUsers === "number") {
+            setViewers(response.connectedUsers);
           }
         });
       }
@@ -60,8 +61,8 @@ const Stream = ({ title }) => {
 
     // Escuchar actualizaciones en tiempo real del servidor
     socket.current.on("connectedUsersUpdated", (data) => {
-      if (data && typeof data.connectedUsers === 'number') {
-        setViewers(20 + Math.floor(data.connectedUsers / 2));
+      if (data && typeof data.connectedUsers === "number") {
+        setViewers(data.connectedUsers);
       }
     });
 

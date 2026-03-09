@@ -22,7 +22,7 @@ const Header = ({ live }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Inicialización
 
   const dispatch = useDispatch();
-  const videos = useSelector(state => state.videos.videos);
+  const videos = useSelector((state) => state.videos?.videos || []);
 
   // Filtrar videos según si es móvil o no
   const filteredVideos = useMemo(() => {

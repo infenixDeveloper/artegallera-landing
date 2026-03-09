@@ -10,7 +10,8 @@ import "./Events.css";
 
 const Events = ({ name, date, time }) => {
   const dispatch = useDispatch();
-  const videos = useSelector((state) => state.videos.videos.filter((video) => !video.is_event_video));
+  const allVideos = useSelector((state) => state.videos?.videos || []);
+  const videos = allVideos.filter((video) => !video.is_event_video);
 
   useEffect(() => {
     dispatch(getPromotions());
